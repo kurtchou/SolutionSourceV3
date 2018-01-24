@@ -1,0 +1,121 @@
+﻿@model IEnumerable<SolutionSource.Domain.PPSNav>
+@{
+    ViewBag.Title = "Home Page";
+}
+<div id="MSContent" style="background-color: white; display: block;">
+    <div class="container" id="divContent">
+        <div class="container">
+            @foreach (var item in Model.Where(t => t.ID == @ViewBag.NavID))
+            {
+                @Html.Raw(@ViewBag.htmlBread)
+                <div class="media align-middle">
+                    <span class="media-left">
+                        <img src="@ViewBag.ImgPath" alt="" height="48px" onerror="this.src='../../Content/img/No_Image_Available.png'">
+                    </span>
+                    <div class="media-body">
+                        <h1 class="media-heading" style="line-height: 48px;">@item.Title&nbsp;&nbsp;
+                            <a href="#">
+                                <span class="glyphicon glyphicon-bookmark" onclick="OpenPreferenceWindow(&quot;View&quot;)" data-toggle="modal" data-target="#PPSModal" style="font-size: 18px"></span>
+                            </a>
+                        </h1>
+                    </div>
+                </div>
+                @Html.Raw(@item.LongDesc);
+                if (@ViewBag.showChild)
+                {
+                    <div class="row">
+                        <div class="container">
+                            <hr />
+                        </div>
+                        <div class="col-md-4 padding-lg" id="divC1">
+                        </div>
+                        <div class="col-md-4 padding-lg" id="divC2">
+                        </div>
+                        <div class="col-md-4 padding-lg" id="divC0">
+                        </div>
+                        @{
+                            int i = 1;
+                            foreach (var childPage in @ViewBag.childPages)
+                            {
+                                <div style="margin-bottom:10px;" id="divCount-@i">
+                                    <div class="SubCat1" id="r-@childPage.ID">
+                                        <div class="media">
+                                            <a class="" href="#w-@childPage.ID" data-toggle="collapse" aria-expanded="true" id="a-@childPage.ID" style="display:none">
+                                                <em class="pull-right fa fa-chevron-down align-bottom fa-lg" style="vertical-align: bottom;">&nbsp;</em>
+                                            </a>
+                                            <span class="media-left align-middle"><img id="img-@childPage.ID" alt=""></span>
+                                            <div class="media-body">
+                                                <a href="/Page/ViewID/@childPage.ID">
+                                                    <h3 class="media-heading">@childPage.Title</h3>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="w-@childPage.ID" class="fade dydCol collapse" aria-expanded="false" style="padding: 5px 5px 8px 10px; background-color: rgb(0, 150, 214); color: rgb(255, 255, 255)">
+                                        <p>
+                                            <a href="/Page/ViewID/@childPage.ID" style="color:white">
+                                                <strong>@childPage.Title</strong>
+                                            </a>
+                                        </p>
+                                        <ul id="ul-@childPage.ID"></ul>
+                                    </div>
+                                </div>
+                                i = i + 1;
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(function () {//child page background
+            $('div[id^="r-"]').each(function() {
+                var id = $(this).attr('id').split('-')[1];
+                $(this).attr('style','background-image: url("../../Content/img/PS/SubCatTile_ID' + id + '.png');
+            });
+        });
+        $(function () { 
+            $('img[id^="img-"]').each(function() {
+                var id = $(this).attr('id').split('-')[1];
+                $(this).attr('src', '../../Content/img/PS/TitleIcon_ID' + id + '.png');
+            });
+        });
+        $(function () { 
+            $('div[id^="divCount-"]').each(function() {
+                var id = $(this).attr('id').split('-')[1];
+                var destDiv = parseInt(id) % 3;
+                //alert(destDiv);
+                $(this).appendTo('#divC' + destDiv);
+            });
+        });
+        $(function () { 
+            $('a[id^="a-"]').each(function() {
+                var id = $(this).attr('id').split('-')[1];
+                $.ajax({
+                    url: '/Page/GetChildNav',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: id },
+                    success: function (result) {
+                        //alert(JSON.stringify(result));
+                        var resultObj = JSON.parse(result);
+                        if(resultObj.length > 0){
+                            $('#a-' + id).show();
+                            $.each(resultObj, function(key,value){
+                                $('#ul-' + id).append('<li><a href="/Page/ViewID/' + value.ID + '" style="color:white">' + value.Title + '</a></li>');
+                            });
+                            //$('#w-' + id).show();
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            });
+        });
+    </script>
+}
+
