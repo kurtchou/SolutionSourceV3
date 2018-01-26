@@ -23,46 +23,147 @@
                 @Html.Raw(@item.LongDesc);
                 if (@ViewBag.showChild)
                 {
+                    <hr />
                     <div class="row">
-                        <div class="container">
-                            <hr />
-                        </div>
                         <div class="col-md-4 padding-lg" id="divC1">
                         </div>
                         <div class="col-md-4 padding-lg" id="divC2">
                         </div>
                         <div class="col-md-4 padding-lg" id="divC0">
                         </div>
-                        @{
-                            int i = 1;
-                            foreach (var childPage in @ViewBag.childPages)
-                            {
-                                <div style="margin-bottom:10px;" id="divCount-@i">
-                                    <div class="SubCat1" id="r-@childPage.ID">
-                                        <div class="media">
-                                            <a class="" href="#w-@childPage.ID" data-toggle="collapse" aria-expanded="true" id="a-@childPage.ID" style="display:none">
-                                                <em class="pull-right fa fa-chevron-down align-bottom fa-lg" style="vertical-align: bottom;">&nbsp;</em>
+                    </div>
+                    {
+                        int i = 1;
+                        foreach (var childPage in @ViewBag.childPages)
+                        {
+                            <div style="margin-bottom:10px;" id="divCount-@i">
+                                <div class="SubCat1" id="r-@childPage.ID">
+                                    <div class="media">
+                                        <a class="" href="#w-@childPage.ID" data-toggle="collapse" aria-expanded="true" id="a-@childPage.ID" style="display:none">
+                                            <em class="pull-right fa fa-chevron-down align-bottom fa-lg" style="vertical-align: bottom;">&nbsp;</em>
+                                        </a>
+                                        <span class="media-left align-middle"><img id="img-@childPage.ID" alt=""></span>
+                                        <div class="media-body">
+                                            <a href="/Page/ViewID/@childPage.ID">
+                                                <h3 class="media-heading">@childPage.Title</h3>
                                             </a>
-                                            <span class="media-left align-middle"><img id="img-@childPage.ID" alt=""></span>
-                                            <div class="media-body">
-                                                <a href="/Page/ViewID/@childPage.ID">
-                                                    <h3 class="media-heading">@childPage.Title</h3>
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div id="w-@childPage.ID" class="fade dydCol collapse" aria-expanded="false" style="padding: 5px 5px 8px 10px; background-color: rgb(0, 150, 214); color: rgb(255, 255, 255)">
-                                        <p>
-                                            <a href="/Page/ViewID/@childPage.ID" style="color:white">
-                                                <strong>@childPage.Title</strong>
-                                            </a>
-                                        </p>
-                                        <ul id="ul-@childPage.ID"></ul>
-                                    </div>
                                 </div>
-                                i = i + 1;
-                            }
+                                <div id="w-@childPage.ID" class="fade dydCol collapse" aria-expanded="false" style="padding: 5px 5px 8px 10px; background-color: rgb(0, 150, 214); color: rgb(255, 255, 255)">
+                                    <p>
+                                        <a href="/Page/ViewID/@childPage.ID" style="color:white">
+                                            <strong>@childPage.Title</strong>
+                                        </a>
+                                    </p>
+                                    <ul id="ul-@childPage.ID"></ul>
+                                </div>
+                            </div>
+                            i = i + 1;
                         }
+                    }
+                }
+                if (@ViewBag.showAsset)
+                {
+                    <div class="container" id="divExpandControl" style="background-color:#DEDEDE;padding:10px 15px 10px 10px;margin-top:20px">
+                        <a href="javascript:void(0)" onclick="ExpandAllAsset()">Expand All</a> |
+                        <a href="javascript:void(0)" onclick="ContractAllAsset()">Hide All</a>&nbsp;&nbsp;&nbsp;&nbsp;Displayed
+                        <b><span id="spanAssetTotalCount" class="blue"></span></b>total assets
+                        <div style="float:right" id="divViewControl">
+                            <span onclick="viewControl(0)" class="glyphicon glyphicon-align-justify" style="cursor:pointer"></span>
+                            <div style="position: absolute; width: 180px; margin-left: -150px; border: 1px solid rgb(204, 204, 204); z-index: 4000; padding: 10px; background: rgb(204, 230, 255); border-radius: 10px; margin-top: -2px;display:none" id="divControlOption">
+                                <a href="javascript:void(0)" onclick="viewControl(3)"></a>
+                                <div id="divDefault">
+                                    <a href="javascript:void(0)" onclick="viewControl(3)">
+                                        <span class="glyphicon glyphicon-tag lgrey" style="cursor: alias; font-weight: normal;" title="Default View" id="spanV1"></span>
+                                        <span id="spanSpecialTag" class="lgrey" style="font-weight: normal;">Default View</span>
+                                    </a><br>
+                                </div>
+                                <a href="javascript:void(0)" onclick="viewControl(1)">
+                                    <span class="glyphicon glyphicon-th-large blue" style="cursor: alias; font-weight: bold;" title="Content Type View" id="spanV2"></span>
+                                    <span id="spanContentType" class="blue" style="font-weight: bold;">Content Type View</span>
+                                </a><br>
+                                <a href="javascript:void(0)" onclick="viewControl(2)">
+                                    <span class="glyphicon glyphicon-th-list lgrey" style="cursor: alias; font-weight: normal;" title="Asset View" id="spanV3"></span>
+                                    <span id="spanAsset" class="lgrey" style="font-weight: normal;">Asset View</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divAssetDataArea">
+                        <div id="divContentDetail1" class="col-sm-9" style="padding-left:0px;display:none">
+                            @foreach (var f in ViewBag.contentViewAssetsPortfolio)
+                            {
+                                <h3>@f.Key</h3>
+                                <hr style="clear:both;margin:0 0 0 0;height:5px">
+
+                                var d1 = new List<string>();
+                                foreach (var v in f.Value)
+                                {
+                                    if (!d1.Contains(@v.ContentType0))
+                                    {
+                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
+                                            <b>
+                                                <span>@v.ContentType0</span>
+                                            </b>&nbsp;&nbsp;
+                                            <span class="assetCount"></span>
+                                        </div>
+                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
+                                            <ul style="padding-left:0px; margin-bottom:0px;"></ul>
+                                        </div>
+                                    }
+                                    d1.Add(@v.ContentType0);
+                                }
+                            }
+                            @foreach (var f in ViewBag.contentViewAssets)
+                            {
+                                <h3>@f.Key</h3>
+                                <hr style="clear:both;margin:0 0 0 0;height:5px">
+
+                                var d2 = new List<string>();
+                                foreach (var v in f.Value)
+                                {
+                                    if (!d2.Contains(@v.ContentType0))
+                                    {
+                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
+                                            <b>
+                                                <span>@v.ContentType0</span>
+                                            </b>&nbsp;&nbsp;
+                                            <span class="assetCount"></span>
+                                        </div>
+                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
+                                            <ul style="padding-left:0px; margin-bottom:0px;">
+                                            </ul>
+                                        </div>
+                                    }
+                                    d2.Add(@v.ContentType0);
+                                }
+                            }
+                        </div>
+                        <div id="divContentDetail2" class="col-sm-9" style="padding-left:0px;display:none">
+                            @{ 
+                                var d3 = new List<int>();
+                                foreach (var f in ViewBag.assetViewAssets)
+                                {
+                                    if (!d3.Contains(@f.ID)) {
+                                        <div id="div-Assets-@f.ID-title" class="handcursor">
+                                            <b>
+                                                <span>@f.ATitle</span>
+                                            </b>&nbsp;&nbsp;
+                                            <span class="assetCount"></span>
+                                        </div>
+                                        <div id="div-Assets-@f.ID" style="display: block;" class="switchgroup1">
+                                            <div  style="padding-left: 24px;display:inline-block">@f.ShortDesc</div>
+                                            <ul style="padding-left:0px; margin-bottom:0px;"></ul>
+                                        </div>
+                                    }
+                                    d3.Add(@f.ID);
+                                }
+                            }
+                        </div>
+                        <div class="col-sm-3" style="background-color: rgb(239, 239, 239); padding-top: 10px; padding-left: 30px; padding-bottom: 60px; margin-top: 10px; left: 30px;" id="divSearchHidden">
+                            asset right
+                        </div>
                     </div>
                 }
             }
@@ -71,51 +172,159 @@
 </div>
 @section Scripts {
     <script>
-        $(function () {//child page background
-            $('div[id^="r-"]').each(function() {
+        var gDivControlOptionOpen = false;
+        function viewControl(viewType){
+            if(viewType == 0){
+                if(gDivControlOptionOpen){
+                    gDivControlOptionOpen = false;
+                    $('#divControlOption').hide();
+                }else{
+                    gDivControlOptionOpen = true;
+                    $('#divControlOption').show();
+                }
+            }else if(viewType == 1){
+                //alert("content type view");
+                $('#divContentDetail1').hide();
+                $('#divContentDetail2').hide();
+                $('#divContentDetail1').show();
+            }else if(viewType == 2){
+                //alert("asset view");
+                $('#divContentDetail1').hide();
+                $('#divContentDetail2').hide();
+                $('#divContentDetail2').show();
+            }else if(viewType == 3){
+                alert("grouop view");
+                $('#divContentDetail1').hide();
+                $('#divContentDetail2').hide();
+            }else{
+                alert("viewType Error");
+            }
+        }
+
+        $(function () {
+            $('div[id^="r-"]').each(function() {//child page background
                 var id = $(this).attr('id').split('-')[1];
                 $(this).attr('style','background-image: url("../../Content/img/PS/SubCatTile_ID' + id + '.png');
             });
-        });
-        $(function () { 
-            $('img[id^="img-"]').each(function() {
+            $('img[id^="img-"]').each(function() {//child icon img
                 var id = $(this).attr('id').split('-')[1];
                 $(this).attr('src', '../../Content/img/PS/TitleIcon_ID' + id + '.png');
             });
-        });
-        $(function () { 
-            $('div[id^="divCount-"]').each(function() {
+            $('div[id^="divCount-"]').each(function() {//build child div box
                 var id = $(this).attr('id').split('-')[1];
                 var destDiv = parseInt(id) % 3;
                 //alert(destDiv);
                 $(this).appendTo('#divC' + destDiv);
             });
-        });
-        $(function () { 
-            $('a[id^="a-"]').each(function() {
-                var id = $(this).attr('id').split('-')[1];
-                $.ajax({
-                    url: '/Page/GetChildNav',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { id: id },
-                    success: function (result) {
-                        //alert(JSON.stringify(result));
-                        var resultObj = JSON.parse(result);
-                        if(resultObj.length > 0){
-                            $('#a-' + id).show();
-                            $.each(resultObj, function(key,value){
-                                $('#ul-' + id).append('<li><a href="/Page/ViewID/' + value.ID + '" style="color:white">' + value.Title + '</a></li>');
-                            });
-                            //$('#w-' + id).show();
+
+            _.defer(function(){
+                $('a[id^="a-"]').each(function() {//find child has child
+                    var id = $(this).attr('id').split('-')[1];
+                    $.ajax({
+                        url: '/Page/GetChildNav',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { id: id },
+                        success: function (result) {
+                            //alert(JSON.stringify(result));
+                            var resultObj = JSON.parse(result);
+                            if(resultObj.length > 0){
+                                $('#a-' + id).show();
+                                $.each(resultObj, function(key,value){
+                                    $('#ul-' + id).append('<li><a href="/Page/ViewID/' + value.ID + '" style="color:white">' + value.Title + '</a></li>');
+                                });
+                                //$('#w-' + id).show();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
                         }
-                    },
-                    error: function () {
-                        alert("error");
-                    }
+                    });
                 });
             });
+
+            _.defer(function(){//build content type view, asset view html here
+                var rawData = @Html.Raw(Json.Encode(@ViewBag.assetViewAssets));//use ViewBag in javascript
+                var _thisNavId =  @ViewBag.NavID;
+                var _thisViewType =  @ViewBag.viewType;
+                if(_thisViewType == 1){
+                    $('#divContentDetail1').show();
+                }else if(_thisViewType == 2){
+                    $('#divContentDetail2').show();
+                }else if(_thisViewType == 3){
+                    alert("group view");
+                }else{
+                    alert("default view type error");
+                }
+                rawData = _.map(rawData, function(arr){
+                    if(arr.NavID != _thisNavId){
+                        arr.ContentTypeOrderID = arr.ContentTypeOrderID * 100;//make offering order id big
+                    }
+                    return arr;
+                });
+                rawData = _.sortBy(rawData, function(arr) {
+                    return parseInt(arr.ContentTypeOrderID);
+                });
+                $.each(rawData, function(index, value) {
+                    //alert( index + ": " + value.ContentType0);
+                    var markHtml = value.Mark.length > 0 ? " - " + "<span  style='color:#C09;font-size:9pt'>" + value.Mark + "</span>" : "";
+                    var confidentialityHtml = value.Confidentiality.indexOf('Internal') > -1 ? ' | <font color="red">' + value.Confidentiality + '</font>' : ' | ' +  value.Confidentiality;
+                    var publishDateHtml = " | " + value.PublishDate.split(' ')[0].replace(/\//g, '-');// + '-' + value.ContentTypeOrderID;//debug order id
+                    var favoriteIconHtml = '<br/><span class="glyphicon glyphicon-star" style="color:#0096D6;cursor:pointer" onclick="SaveFavorite(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="SaveFavorite(' + value.FID + ')">Add to favorite</a>';
+                    var shareIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-share " style="color:#0096D6;cursor:pointer" onclick="share(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="share(' + value.FID + ')">Share link</a>';
+                    var emailIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-envelope " style="color:#0096D6;cursor:pointer" onclick="email(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="email(' + value.FID + ')">Email link</a>';
+                    var previewIconHtml = '';
+                    if(value.Link == ''){//only file will show preview
+                        previewIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-eye-open " style="color:#0096D6;cursor:pointer" onclick="preview(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="preview(' + value.FID + ')">Preview file</a>';
+                    }
+                    var htmlToAppend = '<hr style="clear:both; margin:5px 0px 0px 0px; height:1px"><li style="display:inline-block;width:100%"><div class="AssetResult dydCount" id="divFile-2727" style="display: inline-block; width: 100%; padding: 0px;"><div class="col-xs-10" style="width:100%"><h4 style="display:inline"><strong><a onclick="logClick(' + value.FID + ');fileClick(' + value.FID + ')" href="javascript:void(0)" target="_blank">' + value.FTitle + '</a></strong></h4>' + markHtml + '<p>' + value.ShortDesc + '</p><p id="p' + value.FID + '"></p></li>';
+
+                    //content type view starts here
+                    if(value.ContentGroup == 'Portfolio'){
+                        if(value.Confidentiality.indexOf('Internal') > -1){
+                            $('#div-Internal_Facing-' + value.ContentType0.replace(/ /g, '_')).find('ul').append(htmlToAppend);
+                            $('#div-Internal_Facing-' + value.ContentType0.replace(/ /g, '_')).find('#p' + value.FID).append(ReplaceLoopUpMultiID(value.Region + confidentialityHtml + publishDateHtml + favoriteIconHtml + shareIconHtml + emailIconHtml + previewIconHtml));
+                        }else{
+                            $('#div-Customer_Facing-' + value.ContentType0.replace(/ /g, '_')).find('ul').append(htmlToAppend);
+                            $('#div-Customer_Facing-' + value.ContentType0.replace(/ /g, '_')).find('#p' + value.FID).append(ReplaceLoopUpMultiID(value.Region + confidentialityHtml + publishDateHtml + favoriteIconHtml + shareIconHtml + emailIconHtml + previewIconHtml));
+                        }
+
+                    }else{
+                        $('#div-' + value.ContentGroup + "-" + value.ContentType0.replace(/ /g, '_')).find('ul').append(htmlToAppend);
+                        $('#div-' + value.ContentGroup + "-" + value.ContentType0.replace(/ /g, '_')).find('#p' + value.FID).append(ReplaceLoopUpMultiID(value.Region + confidentialityHtml + publishDateHtml + favoriteIconHtml + shareIconHtml + emailIconHtml + previewIconHtml));
+                    }
+
+                    //asset view starts here
+                    $('#div-Assets-' + value.ID).find('ul').append();
+                });
+                expandcontract = new switchcontent("switchgroup1", "div") //Limit scanning of switch contents to just "div" elements
+                expandcontract.setStatus('<img src="../../Content/img/minus.png" style="margin-right:5px;" /> ', '<img src="../../Content/img/plus.png" style="margin-right:5px;" /> ')
+                //expandcontract.setColor('blue', 'grey')
+                expandcontract.setPersist(false)
+                expandcontract.collapsePrevious(false) //Only one content open at any given time
+                expandcontract.init();
+            });
+
+
+
         });
+
+        function logClick(fid){
+            alert(fid);
+        }
+
+        function fileClick(fid){
+            alert(fid);
+        }
+
+        $('body').toTop({css: {
+            position: "fixed",
+            right: '3rem',
+            bottom: '1rem',
+            fontSize: '3rem',
+            cursor: 'pointer',
+            color: '#ECF0F1'
+        }});
     </script>
 }
 

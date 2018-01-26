@@ -211,6 +211,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Domain\ActiveRecord.cs" />
+    <Compile Include="Domain\AssetsAndFiles.cs" />
     <Compile Include="Domain\PPSNav.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,6 +225,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fontawesome.css" />
+    <Content Include="Content\img\back2Top.png" />
     <Content Include="Content\img\Feat_CarePack.png" />
     <Content Include="Content\img\Feat_Contractual.png" />
     <Content Include="Content\img\Feat_HPDaaS.png" />
@@ -236,7 +238,9 @@
     <Content Include="Content\img\IconDispose.png" />
     <Content Include="Content\img\IconMaintain.png" />
     <Content Include="Content\img\IconOptimize.png" />
+    <Content Include="Content\img\minus.png" />
     <Content Include="Content\img\No_Image_Available.png" />
+    <Content Include="Content\img\plus.png" />
     <Content Include="Content\img\PS\SubCatTile_ID1574.png" />
     <Content Include="Content\img\PS\SubCatTile_ID1575.png" />
     <Content Include="Content\img\PS\SubCatTile_ID667.png" />
@@ -279,6 +283,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\solutionSourceCommon.js" />
+    <Content Include="Scripts\switchContent.js" />
+    <Content Include="Scripts\toTop.js" />
+    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

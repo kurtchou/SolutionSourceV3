@@ -24,9 +24,11 @@ cast(
             ViewBag.NavID = id;
             ViewBag.ImgPath = "../../Content/img/PS/TitleIcon_ID" + id + ".png";//main icon
 
+            //breadcrumb
             string _htmlBread = buildBreadCrumb(page, id);
             ViewBag.htmlBread = _htmlBread.Substring(3);//take out first 3 characters
 
+            //those page with child
             var _hasChild = page
                    .Where(t => t.ParentID == id.ToString())
                    .ToList();
@@ -36,7 +38,38 @@ cast(
                 ViewBag.showChild = true;
                 ViewBag.childPages = _hasChild;
             }
-            
+
+            var _viewType = page
+                .Where(t => t.ID == id)
+                .ToList();
+
+            ViewBag.viewType = _viewType.FirstOrDefault().ViewType;
+
+            //find assets and files based on nav id
+            var assets = ActiveRecord.GetAllWithSQL<AssetsAndFiles>(@"
+select a.id as FID, b.id as ID, b.Status, a.title as FTitle, b.Title as ATitle, b.ShortDesc, a.Link, b.Region, CONVERT(datetime, a.PublishDate) as PublishDate, b.NavID, b.Offering, a.Confidentiality, a.ContentGroup, a.ContentType0, a.Mark, a.ContentTypeOrderID, b.OrderID, a.OrderID as FileOrderID, a.Created
+from PPSSSFiles as a inner join PPSSSAssets as b on a.AssetID = b.id
+where (b.NavID = '" + id + @"' or b.Offering like '%"  + id + @"%') and b.Status = 'Active' and a.ContentType0 <> 'Useful Links' 
+and a.ContentGroup <> 'Wins'
+            ");
+
+            ViewBag.showAsset = false;
+            if (assets.Count > 0) {
+                ViewBag.showAsset = true;
+                ViewBag.contentViewAssetsPortfolio = assets //portoflio
+                    .Where(t => t.ContentGroup == "Portfolio")
+                    .GroupBy(t => t.Confidentiality.Contains("Internal") ? "Internal Facing" : "Customer Facing")
+                    .ToDictionary(k => k.Key, v => v.ToList());
+
+                ViewBag.contentViewAssets = assets //non portoflio
+                    .Where(t => t.ContentGroup != "Portfolio")
+                    .GroupBy(t => t.ContentGroup)
+                    .ToDictionary(k => k.Key, v => v.ToList());
+
+                ViewBag.assetViewAssets = assets
+                   .OrderBy(t => Int32.Parse(t.OrderID))//asset order id should already be grouped by navid
+                   .ToList(); ;
+            }
 
             return View(page);
         }
