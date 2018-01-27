@@ -22,3 +22,15 @@ function ExpandAllAsset() {
 function ContractAllAsset() {
     expandcontract.sweepToggle("contract");
 }
+
+function Base64EncodeString(UnencodedString) {
+    //var encodedString = btoa(encodeURIComponent(UnencodedString));
+    var encodedString = btoa(UnencodedString);
+    return encodedString;
+}
+
+function Base64DecodeString(EncodedString) {
+    //decodedString = atob(decodeURIComponent(EncodedString));
+    decodedString = atob(EncodedString);
+    return decodedString;
+}

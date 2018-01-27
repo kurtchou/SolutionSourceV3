@@ -13,13 +13,19 @@ namespace SolutionSource.Controllers
     {
         public ActionResult ViewID(int id)
         {
+            
             var page = ActiveRecord.GetAllWithSQL<PPSNav>(@"
+select ID, Title, ParentID, ActiveFlag, LongDesc, OrderID, LevelID, ShowAssets, ViewType, Created
+                    from PPSNav where ActiveFlag = '1' order by CAST(OrderID  AS INT)
+            ");
+
+            var pageById = ActiveRecord.GetAllWithSQL<PPSNav>(@"
 select ID, Title, ParentID, ActiveFlag, 
 cast(
 	cast(N'' as xml).value('xs:base64Binary(sql:column(""LongDesc""))', 'varbinary(max)') as VARCHAR(MAX) 
 ) LongDesc, OrderID, LevelID, ShowAssets, ViewType, Created
-                    from PPSNav where ActiveFlag = '1' order by CAST(OrderID  AS INT)
-            ");
+                    from PPSNav where ActiveFlag = '1' and ID =
+            " + id);
 
             ViewBag.NavID = id;
             ViewBag.ImgPath = "../../Content/img/PS/TitleIcon_ID" + id + ".png";//main icon
@@ -39,11 +45,7 @@ cast(
                 ViewBag.childPages = _hasChild;
             }
 
-            var _viewType = page
-                .Where(t => t.ID == id)
-                .ToList();
-
-            ViewBag.viewType = _viewType.FirstOrDefault().ViewType;
+            ViewBag.viewType = pageById.FirstOrDefault().ViewType;
 
             //find assets and files based on nav id
             var assets = ActiveRecord.GetAllWithSQL<AssetsAndFiles>(@"
@@ -71,7 +73,7 @@ and a.ContentGroup <> 'Wins'
                    .ToList(); ;
             }
 
-            return View(page);
+            return View(pageById);
         }
 
         private string buildBreadCrumb(List<PPSNav> nav, int id) {
