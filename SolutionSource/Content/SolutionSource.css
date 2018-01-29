@@ -187,7 +187,7 @@ ul.icon-list li {
 	font-size: 16px;
 	padding-left: 1.6em;
 	list-style-type: none;
-	background: transparent url(img/icon-arrow.png) no-repeat 0 2px;
+	background: transparent url(../../Content/img/icon-arrow.png) no-repeat 0 2px;
 }
 li {
 	line-height: 1.6em;
@@ -444,7 +444,7 @@ ul.icon-list li {
 	font-size: 14px;
 	padding-left: 1.6em;
 	list-style-type: none;
-	background: transparent url(img/icon-arrow.png) no-repeat 0 2px;
+	background: transparent url(../../Content/img/icon-arrow.png) no-repeat 0 2px;
 }
 li {
 	line-height: 1.6em;

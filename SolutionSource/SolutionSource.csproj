@@ -212,7 +212,9 @@
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Domain\ActiveRecord.cs" />
     <Compile Include="Domain\AssetsAndFiles.cs" />
+    <Compile Include="Domain\Contacts.cs" />
     <Compile Include="Domain\PPSNav.cs" />
+    <Compile Include="Domain\UsefulLinks.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -232,6 +234,7 @@
     <Content Include="Content\img\Feat_Mobility.png" />
     <Content Include="Content\img\Feat_Win10.png" />
     <Content Include="Content\img\HPLogoWhite_SM.png" />
+    <Content Include="Content\img\icon-arrow.png" />
     <Content Include="Content\img\IconConfigure.png" />
     <Content Include="Content\img\IconDeploy.png" />
     <Content Include="Content\img\IconDiscover.png" />

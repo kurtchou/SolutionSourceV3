@@ -17,6 +17,15 @@ function ReplaceLoopUpMultiID(strArray) {
 
 function ExpandAllAsset() {
     expandcontract.sweepToggle("expand");
+    //added 2018-01-28
+    if (gCurrentView == 2) {//asset view customization
+        $('#divContentDetail2 .handcursor').each(function () {//count all files
+            var id = $(this).attr('id').split('-title')[0];
+            if ($(this).css('display').indexOf('none') != -1) {
+                $('#' + id).hide();
+            }
+        });
+    }
 }
 
 function ContractAllAsset() {

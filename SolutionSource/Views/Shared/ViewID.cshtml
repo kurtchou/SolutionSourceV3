@@ -68,7 +68,7 @@
                     <div class="container" id="divExpandControl" style="background-color:#DEDEDE;padding:10px 15px 10px 10px;margin-top:20px">
                         <a href="javascript:void(0)" onclick="ExpandAllAsset()">Expand All</a> |
                         <a href="javascript:void(0)" onclick="ContractAllAsset()">Hide All</a>&nbsp;&nbsp;&nbsp;&nbsp;Displayed
-                        <b><span id="spanAssetTotalCount" class="blue"></span></b>total assets
+                        <b><span id="spanAssetTotalCount" class="blue"></span></b>&nbsp;total assets
                         <div style="float:right" id="divViewControl">
                             <span onclick="viewControl(0)" class="glyphicon glyphicon-align-justify" style="cursor:pointer"></span>
                             <div style="position: absolute; width: 180px; margin-left: -150px; border: 1px solid rgb(204, 204, 204); z-index: 4000; padding: 10px; background: rgb(204, 230, 255); border-radius: 10px; margin-top: -2px;display:none" id="divControlOption">
@@ -80,8 +80,8 @@
                                     </a><br>
                                 </div>
                                 <a href="javascript:void(0)" onclick="viewControl(1)">
-                                    <span class="glyphicon glyphicon-th-large blue" style="cursor: alias; font-weight: bold;" title="Content Type View" id="spanV2"></span>
-                                    <span id="spanContentType" class="blue" style="font-weight: bold;">Content Type View</span>
+                                    <span class="glyphicon glyphicon-th-large lgrey" style="cursor: alias; font-weight: bold;" title="Content Type View" id="spanV2"></span>
+                                    <span id="spanContentType" class="lgrey" style="font-weight: bold;">Content Type View</span>
                                 </a><br>
                                 <a href="javascript:void(0)" onclick="viewControl(2)">
                                     <span class="glyphicon glyphicon-th-list lgrey" style="cursor: alias; font-weight: normal;" title="Asset View" id="spanV3"></span>
@@ -94,75 +94,133 @@
                         <div id="divContentDetail1" class="col-sm-9" style="padding-left:0px;display:none">
                             @foreach (var f in ViewBag.contentViewAssetsPortfolio)
                             {
-                                <h3>@f.Key</h3>
-                                <hr style="clear:both;margin:0 0 0 0;height:5px">
-
-                                var d1 = new List<string>();
-                                foreach (var v in f.Value)
-                                {
-                                    if (!d1.Contains(@v.ContentType0))
-                                    {
-                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
-                                            <b>
-                                                <span>@v.ContentType0</span>
-                                            </b>&nbsp;&nbsp;
-                                            <span class="assetCount"></span>
-                                        </div>
-                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
-                                            <ul style="padding-left:0px; margin-bottom:0px;"></ul>
-                                        </div>
+                                <div id="divContentGroup-@f.Key.ToString().Replace(" ", "_")">
+                                    <h3>@f.Key</h3>
+                                    <hr style="clear:both;margin:0 0 0 0;height:5px">
+                                    @{
+                                        var d1 = new List<string>();
+                                        foreach (var v in f.Value)
+                                        {
+                                            if (!d1.Contains(@v.ContentType0))
+                                            {
+                                            <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
+                                                <b>
+                                                    <span>@v.ContentType0</span>
+                                                </b>&nbsp;
+                                                <span class="assetCount"></span>
+                                            </div>
+                                            <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
+                                                <ul style="padding-left:0px; margin-bottom:0px;"></ul>
+                                            </div>
+                                            }
+                                            d1.Add(@v.ContentType0);
+                                        }
                                     }
-                                    d1.Add(@v.ContentType0);
-                                }
-                            }
+                                </div>
+                                        }
                             @foreach (var f in ViewBag.contentViewAssets)
                             {
-                                <h3>@f.Key</h3>
-                                <hr style="clear:both;margin:0 0 0 0;height:5px">
-
-                                var d2 = new List<string>();
-                                foreach (var v in f.Value)
-                                {
-                                    if (!d2.Contains(@v.ContentType0))
-                                    {
-                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
-                                            <b>
-                                                <span>@v.ContentType0</span>
-                                            </b>&nbsp;&nbsp;
-                                            <span class="assetCount"></span>
-                                        </div>
-                                        <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
-                                            <ul style="padding-left:0px; margin-bottom:0px;">
-                                            </ul>
-                                        </div>
+                                <div id="divContentGroup-@f.Key.ToString().Replace(" ", "_")">
+                                    <h3>@f.Key</h3>
+                                    <hr style="clear:both;margin:0 0 0 0;height:5px">
+                                    @{
+                                        var d2 = new List<string>();
+                                        foreach (var v in f.Value)
+                                        {
+                                            if (!d2.Contains(@v.ContentType0))
+                                            {
+                                                <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")-title" class="handcursor">
+                                                    <b>
+                                                        <span>@v.ContentType0</span>
+                                                    </b>&nbsp;
+                                                    <span class="assetCount"></span>
+                                                </div>
+                                                <div id="div-@f.Key.ToString().Replace(" ", "_")-@v.ContentType0.ToString().Replace(" ", "_")" style="display: block;" class="switchgroup1">
+                                                    <ul style="padding-left:0px; margin-bottom:0px;"></ul>
+                                                </div>
+                                            }
+                                            d2.Add(@v.ContentType0);
+                                        }
                                     }
-                                    d2.Add(@v.ContentType0);
-                                }
-                            }
+                               </div>
+                                        }
                         </div>
                         <div id="divContentDetail2" class="col-sm-9" style="padding-left:0px;display:none">
                             @{ 
                                 var d3 = new List<int>();
                                 foreach (var f in ViewBag.assetViewAssets)
                                 {
-                                    if (!d3.Contains(@f.ID)) {
+                                    if (!d3.Contains(@f.ID))
+                                    {
                                         <div id="div-Assets-@f.ID-title" class="handcursor">
                                             <b>
                                                 <span>@f.ATitle</span>
-                                            </b>&nbsp;&nbsp;
+                                            </b>&nbsp;
                                             <span class="assetCount"></span>
                                         </div>
                                         <div id="div-Assets-@f.ID" style="display: block;" class="switchgroup1">
                                             <div  style="padding-left: 24px;display:inline-block">@f.ShortDesc</div>
-                                            <ul style="padding-left:0px; margin-bottom:0px;"></ul>
+                                            <hr style="clear:both;margin:0 0 0 0;height:5px">
+                                            <ul class="icon-list" style="display:inline"></ul>
+                                            <hr style="clear:both;margin:0 0 0 0;height:5px">
                                         </div>
                                     }
                                     d3.Add(@f.ID);
                                 }
                             }
                         </div>
+                        <div id="divContentDetail3" class="col-sm-9" style="padding-left:0px;display:none">
+                            group asset view
+                        </div>
                         <div class="col-sm-3" style="background-color: rgb(239, 239, 239); padding-top: 10px; padding-left: 30px; padding-bottom: 60px; margin-top: 10px; left: 30px;" id="divSearchHidden">
-                            asset right
+                            <b>Asset Region:</b>
+                            <div style="margin-top:10px">
+                                <span style="font-weight: bold; cursor: pointer;" id="span-viewRegion" class="blue">EMEA</span> | <span class="lgrey" style="cursor: pointer; font-weight: normal;" id="span-viewAll">View All Assets</span>
+                                @{ 
+                                    if(ViewBag.showContact) {
+                                        <br/><br />
+                                        <div id='divPageContacts' class='col-md-12' style='margin-bottom:20px;padding-left:0px'>
+                                            <i class='fa fa-user lgrey' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;&nbsp;<b>Contacts</b>
+                                            <br/>
+                                            <div style='margin-top:10px'>
+                                                @foreach (var f in ViewBag.contacts)
+                                                {
+                                                    if(!String.IsNullOrEmpty(@f.Region))
+                                                    {
+                                                        <a href="mailto:@f.Email"><b>@f.FName&nbsp;@f.LName</b></a><span>(@f.Region)</span>
+                                                    }else{
+                                                        <a href="mailto:@f.Email"><b>@f.FName&nbsp;@f.LName</b></a><br />
+                                                    }
+                                                    <br/>
+                                                    <span style='font-size:9pt;'>@f.Title</span>
+                                                    <br/>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                                @{
+                                    if (ViewBag.showUsefulLinks)
+                                    {
+                                        <br /><br />
+                                        <div id='divPageUsefulLinks' class='col-md-12' style='margin-bottom:20px;padding-left:0px'>
+                                            <i class='fa fa-link lgrey' aria-hidden='true'></i>&nbsp;&nbsp;&nbsp;&nbsp;<b>Useful Links</b>
+                                            <br />
+                                            <div style='margin-top:10px'>
+                                                @foreach (var f in ViewBag.usefulLinks)
+                                                {
+                                                    <div>
+                                                        <a href="javascript:void(0)" target="_blank" onclick="fileClick(@f.FID)">@f.FTitle</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                                
+                            </div>
                         </div>
                     </div>
                 }
@@ -172,9 +230,42 @@
 </div>
 @section Scripts {
     <script>
+        function clearViewControlStyle(){
+            $('#spanAsset').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+            $('#spanSpecialTag').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+            $('#spanContentType').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+            $('#spanV1').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+            $('#spanV2').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+            $('#spanV3').css("font-weight","normal").removeClass('blue').addClass('lgrey');
+
+            $('#divContentDetail1').hide();
+            $('#divContentDetail2').hide();
+            $('#divContentDetail3').hide();
+        }
+
         var gDivControlOptionOpen = false;
+        var gCurrentView = -1;
         function viewControl(viewType){
-            if(viewType == 0){
+            //alert(viewType);
+            //fill the grouped count first
+            $('#divContentDetail' + viewType + ' .switchgroup1').each(function() {//count all group
+                var countGroup = 0;
+                var thisGroupId = $(this).attr('id');
+                //alert(thisGroupId);
+                $(this).find('.dydCount').each(function() {
+                    if($(this).css('display').indexOf('none') == -1){
+                        countGroup ++;
+                    }
+                });
+                if(countGroup == 0){
+                    $('#' + thisGroupId + '-title').hide();
+                }else{
+                    $('#' + thisGroupId + '-title').show();
+                    $('#' + thisGroupId + '-title').find('.assetCount').text('[' + countGroup + ']');
+                }
+            });
+
+            if(viewType == 0){//open close control
                 if(gDivControlOptionOpen){
                     gDivControlOptionOpen = false;
                     $('#divControlOption').hide();
@@ -182,23 +273,64 @@
                     gDivControlOptionOpen = true;
                     $('#divControlOption').show();
                 }
-            }else if(viewType == 1){
-                //alert("content type view");
-                $('#divContentDetail1').hide();
-                $('#divContentDetail2').hide();
+            }else if(viewType == 1){//content type view
+                gCurrentView = 1;
+                clearViewControlStyle();
                 $('#divContentDetail1').show();
-            }else if(viewType == 2){
-                //alert("asset view");
-                $('#divContentDetail1').hide();
-                $('#divContentDetail2').hide();
+
+                var count = 0;
+                $('#divContentDetail' + viewType + ' .dydCount').each(function() {//count all files
+                    if($(this).css('display').indexOf('none') == -1){
+                        count ++;
+                    }
+                });
+                $('#spanAssetTotalCount').text(count);
+                
+                //hide ContentGroup- if there is nothing
+                $('div[id^="divContentGroup-"]').each(function() {//child page background
+                    var countGroup = 0;
+                    //alert(thisGroupId);
+                    $(this).find('.dydCount').each(function() {
+                        if($(this).css('display').indexOf('none') == -1){
+                            countGroup ++;
+                        }
+                    });
+
+                    if(countGroup == 0){
+                        $(this).hide();
+                    }else{
+                        $(this).show();
+                    }
+                });
+
+                $('#spanContentType').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
+                $('#spanV2').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
+            }else if(viewType == 2){//asset view
+                gCurrentView = 2;
+                clearViewControlStyle();
                 $('#divContentDetail2').show();
-            }else if(viewType == 3){
-                alert("grouop view");
-                $('#divContentDetail1').hide();
-                $('#divContentDetail2').hide();
+
+                var count = 0;
+                $('#divContentDetail' + viewType + ' .handcursor').each(function() {//count all files
+                    if($(this).css('display').indexOf('none') == -1){
+                        count ++;
+                    }
+                });
+                $('#spanAssetTotalCount').text(count);
+
+                $('#spanAsset').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
+                $('#spanV3').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
+            }else if(viewType == 3){//group asset view
+                gCurrentView = 3;
+                clearViewControlStyle();
+                $('#divContentDetail3').show();
+
+                $('#spanSpecialTag').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
+                $('#spanV1').css("font-weight","Bold").removeClass('lgrey').addClass('blue');
             }else{
                 alert("viewType Error");
             }
+            ContractAllAsset();
         }
 
         $(function () {
@@ -243,20 +375,11 @@
                 });
             });
 
+            gCurrentView =  @ViewBag.viewType;
             _.defer(function(){//build content type view, asset view html here
                 var rawData = @Html.Raw(Json.Encode(@ViewBag.assetViewAssets));//use ViewBag in javascript
                 var _thisNavId =  @ViewBag.NavID;
-                var _thisViewType =  @ViewBag.viewType;
-                
-                if(_thisViewType == 1){
-                    viewControl(1);
-                }else if(_thisViewType == 2){
-                    viewControl(2);
-                }else if(_thisViewType == 3){
-                    viewControl(3);
-                }else{
-                    alert("default view type error");
-                }
+           
                 rawData = _.map(rawData, function(arr){
                     if(arr.NavID != _thisNavId){
                         arr.ContentTypeOrderID = arr.ContentTypeOrderID * 100;//make offering order id big
@@ -268,17 +391,30 @@
                 });
                 $.each(rawData, function(index, value) {
                     //alert( index + ": " + value.ContentType0);
+                    //for content type
                     var markHtml = value.Mark.length > 0 ? " - " + "<span  style='color:#C09;font-size:9pt'>" + value.Mark + "</span>" : "";
                     var confidentialityHtml = value.Confidentiality.indexOf('Internal') > -1 ? ' | <font color="red">' + value.Confidentiality + '</font>' : ' | ' +  value.Confidentiality;
                     var publishDateHtml = " | " + value.PublishDate.split(' ')[0].replace(/\//g, '-');// + '-' + value.ContentTypeOrderID;//debug order id
                     var favoriteIconHtml = '<br/><span class="glyphicon glyphicon-star" style="color:#0096D6;cursor:pointer" onclick="SaveFavorite(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="SaveFavorite(' + value.FID + ')">Add to favorite</a>';
                     var shareIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-share " style="color:#0096D6;cursor:pointer" onclick="share(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="share(' + value.FID + ')">Share link</a>';
                     var emailIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-envelope " style="color:#0096D6;cursor:pointer" onclick="email(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="email(' + value.FID + ')">Email link</a>';
+
                     var previewIconHtml = '';
                     if(value.Link == ''){//only file will show preview
-                        previewIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-eye-open " style="color:#0096D6;cursor:pointer" onclick="preview(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="preview(' + value.FID + ')">Preview file</a>';
+                        previewIconHtml = '&nbsp;|&nbsp;<span class="glyphicon glyphicon-eye-open" style="color:#0096D6;cursor:pointer" onclick="preview(' + value.FID + ')"></span><a href="javascript:void(0)" style="font-size:12px" onclick="preview(' + value.FID + ')">Preview file</a>';
                     }
-                    var htmlToAppend = '<hr style="clear:both; margin:5px 0px 0px 0px; height:1px"><li style="display:inline-block;width:100%"><div class="AssetResult dydCount" id="divFile-2727" style="display: inline-block; width: 100%; padding: 0px;"><div class="col-xs-10" style="width:100%"><h4 style="display:inline"><strong><a onclick="logClick(' + value.FID + ');fileClick(' + value.FID + ')" href="javascript:void(0)" target="_blank">' + value.FTitle + '</a></strong></h4>' + markHtml + '<p>' + value.ShortDesc + '</p><p id="p' + value.FID + '"></p></li>';
+
+                    //for assets
+                    var favoriteIconHtml2 = '<span class="glyphicon glyphicon-star" style="color:#0096D6;cursor:pointer" onclick="SaveFavorite(' + value.FID + ')"></span>';
+                    var shareIconHtml2 = '<span class="glyphicon glyphicon-share" style="color:#0096D6;cursor:pointer" onclick="share(' + value.FID + ')"></span>';
+                    var emailIconHtml2 = '<span class="glyphicon glyphicon-envelope" style="color:#0096D6;cursor:pointer" onclick="email(' + value.FID + ')"></span>';
+                    var previewIconHtm2 = '';
+                    if(value.Link == ''){//only file will show preview
+                        previewIconHtm2 = '<span class="glyphicon glyphicon-eye-open" style="color:#0096D6;cursor:pointer" onclick="preview(' + value.FID + ')"></span>';
+                    }
+                    
+
+                    var htmlToAppend = '<div class="dydRegion-' + value.Region + ' dydCount"><hr style="clear:both; margin:5px 0px 0px 0px; height:1px"><li style="display:inline-block;width:100%"><div class="AssetResult" style="display: inline-block; width: 100%; padding: 0px;"><div class="col-xs-10" style="width:100%"><h4 style="display:inline"><strong><a onclick="logClick(' + value.FID + ');fileClick(' + value.FID + ')" href="javascript:void(0)" target="_blank">' + value.FTitle + '</a></strong></h4>' + markHtml + '<p>' + value.ShortDesc + '</p><p id="p' + value.FID + '"></p></li></div>';
 
                     //content type view starts here
                     if(value.ContentGroup == 'Portfolio'){
@@ -296,18 +432,46 @@
                     }
 
                     //asset view starts here
-                    $('#div-Assets-' + value.ID).find('ul').append();
+                    $('#div-Assets-' + value.ID).find('ul').append('<li style="display:block;margin-top:0px" class="dydRegion-' + value.Region + ' dydCount"><a href="javascript:void(0)" onclick="logClick(' + value.FID + ');fileClick(' + value.FID + ')"><b>' + value.FTitle + '</b></a><div style="float:right">' + favoriteIconHtml2 + shareIconHtml2 + emailIconHtml2 + previewIconHtm2 + '</div></li>');
                 });
+
+                //switch asset view 
+
                 expandcontract = new switchcontent("switchgroup1", "div") //Limit scanning of switch contents to just "div" elements
-                expandcontract.setStatus('<img src="../../Content/img/minus.png" style="margin-right:5px;" /> ', '<img src="../../Content/img/plus.png" style="margin-right:5px;" /> ')
-                //expandcontract.setColor('blue', 'grey')
-                expandcontract.setPersist(false)
-                expandcontract.collapsePrevious(false) //Only one content open at any given time
+                expandcontract.setStatus('<img src="../../Content/img/minus.png" style="margin-right:5px;" /> ', '<img src="../../Content/img/plus.png" style="margin-right:5px;" /> ');
+                //expandcontract.setColor('blue', 'grey');
+                expandcontract.setPersist(false);
+                expandcontract.collapsePrevious(false); //Only one content open at any given time
                 expandcontract.init();
+
+                //count assets and control css
+                viewControl(gCurrentView);
             });
 
+            $('#span-viewRegion').click(function() {//filter by region
+                $('[class^="dydRegion-"]').each(function() {//
+                    var region = $(this).attr('class').split('-')[1];
+                    if(region.indexOf('Worldwide') == -1 && region.indexOf('EMEA') == -1){
+                        $(this).hide();
+                    }
+                    //count assets and control css
+                    $('#span-viewRegion').css('font-weight', 'bold').removeClass('lgrey').addClass('blue');
+                    $('#span-viewAll').css('font-weight', 'normal').removeClass('blue').addClass('lgrey');
+                });
+                viewControl(gCurrentView);
+            });
 
+            $('#span-viewAll').click(function() {//show all
+                $('[class^="dydRegion-"]').each(function() {//
+                    $(this).show();
+                });
 
+                $('#span-viewRegion').css('font-weight', 'normal').removeClass('blue').addClass('lgrey');
+                $('#span-viewAll').css('font-weight', 'bold').removeClass('lgrey').addClass('blue');
+
+                //count assets and control css
+                viewControl(gCurrentView);
+            });
         });
 
         function logClick(fid){
