@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Default Web Site/" />
+  <setParameter name="SolutionSourceCString-Web.config Connection String" value="Server=mps.cmwocrm5ioak.us-west-2.rds.amazonaws.com;Database=SolutionSource;User Id=mps;Password=4EZM9p3CXVpD5BmQckXjqjDe;" />
+</parameters>

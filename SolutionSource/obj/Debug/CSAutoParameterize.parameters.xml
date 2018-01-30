@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="SolutionSourceCString-Web.config Connection String" description="SolutionSourceCString Connection String used in web.config by the application to access the database." defaultValue="Server=mps.cmwocrm5ioak.us-west-2.rds.amazonaws.com;Database=SolutionSource;User Id=mps;Password=4EZM9p3CXVpD5BmQckXjqjDe;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\chouf\\Documents\\Visual\ Studio\ 2015\\Projects\\SolutionSource\\SolutionSource\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='SolutionSourceCString']/@connectionString" />
+  </parameter>
+</parameters>
